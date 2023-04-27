@@ -1,0 +1,42 @@
+import { loadPosts } from '../lib/load-posts'
+import { Roboto, Noto_Sans_KR } from "next/font/google"; // Roboto와 한글 NotoSans를 사용합니다.
+
+//한글을 프리로드 지정하지 않음.  
+const notoSansKr = Noto_Sans_KR({
+    // preload: true, 기본값
+    subsets: ["latin"], // 또는 preload: false
+    weight: ["100", "400", "700", "900"], // 가변 폰트가 아닌 경우, 사용할 fontWeight 배열
+});
+
+export default function About({posts}) {
+    return (
+        <main
+          className={`items-center justify-between p-24 ${notoSansKr.className}`}>
+          <div
+            className="z-10 w-full justify-center border-b border-gray-300 bg-gradient-to-b">
+            <p>
+              글들~
+            </p>
+            
+            <ul>
+              {posts.map((post) => (
+                  <li key={post.id}>{post.title}</li>
+              ))}
+            </ul>
+            <Link href='/about'>
+              about으로 이동~
+            </Link>
+            
+          </div>
+        </main>
+    )
+}
+
+
+export async function getStaticProps() {//페이지마다
+    const posts = await loadPosts()
+    
+    return {
+        props: { posts }
+    }
+}
