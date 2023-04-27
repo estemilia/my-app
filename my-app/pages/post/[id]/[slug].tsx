@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Header from '../../../components/header'
 
-export default function Index({post}) {
+export default function Index() {
     const router = useRouter()
     const id = router.query.id as string
     const comment = router.query.comment as string

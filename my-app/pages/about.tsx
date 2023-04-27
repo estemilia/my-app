@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import Header from '../components/header'
 import useSWR from 'swr'
+import { PostsProps } from '../interface'
+
 
 // https://swr.vercel.app/ko
 // https://nextjs.org/docs/basic-features/data-fetching/client-side
 
-const fetcher =  (url) => fetch(url).then((res) => res.json());
+const fetcher =  (url: any) => fetch(url).then((res) => res.json());
 
 function Profile() {
     const {data, error, isLoading} = useSWR('https://api.github.com/repos/vercel/swr', fetcher)
@@ -37,8 +39,9 @@ function Profile() {
     )
 }
 
+export default function About(props:PostsProps) {
+    const { posts } = props
 
-export default function About({data}) {
     return (
         <main
           className={'items-center justify-between'}>
@@ -52,8 +55,8 @@ export default function About({data}) {
             </p>
             <Profile />
             <ul>
-              {data.map((post) => (
-                  <li key={post.id}>{post.title}</li>
+              {posts && posts.map((post) => (
+                  <li key={`post-${post.id}`}>{post.title}</li>
               ))}
             </ul>
            </div>
@@ -61,14 +64,15 @@ export default function About({data}) {
     )
 }
 
+
 //getStaticProps 와 getServerSideProps를 함께 사용하지 못함
-export async function getServerSideProps() {
+async function getServerSideProps() {
     // const res = await fetch('https://.../data')
     // const data = await res.json()
-    const data = [{id: 1, title: '아이고'}, {id: 2, title: '개발새발'}]
+    const posts = [{id: 1, title: '아이고', slug: 'aa'}, {id: 2, title: '개발새발', slug: 'bb'}]
     
     return {
-        props: { data }
+        props: { posts }
     }
 
 }

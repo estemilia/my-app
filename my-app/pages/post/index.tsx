@@ -1,8 +1,12 @@
 import { loadPosts } from '../../lib/load-posts'
 import Header from '../../components/header'
 import Link from 'next/link'
+import { PostsProps } from '../../interface'
 
-export default function About({posts}) {
+
+export default function Posts(props:PostsProps) {
+    const { posts } = props
+    
     return (
         <main
           className={`items-center justify-between p-24`}>
@@ -14,8 +18,8 @@ export default function About({posts}) {
             </h1>
             
             <ul>
-              {posts.map((post) => (
-                  <li key={post.id}>
+              {posts && posts.map((post) => (
+                  <li key={`post-${post.id}`}>
                     <Link href={`/post/${post.id}/${encodeURIComponent(post.slug)}`}>
                       {post.title}
                     </Link>
@@ -26,6 +30,7 @@ export default function About({posts}) {
         </main>
     )
 }
+
 
 
 export async function getStaticProps() {//페이지마다
